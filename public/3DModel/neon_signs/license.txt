@@ -1,0 +1,11 @@
+Model Information:
+* title:	Neon Signs
+* source:	https://sketchfab.com/3d-models/neon-signs-307e887d740649f88fbc77b061f3a742
+* author:	Shalmon (https://sketchfab.com/nashalanandas)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Neon Signs" (https://sketchfab.com/3d-models/neon-signs-307e887d740649f88fbc77b061f3a742) by Shalmon (https://sketchfab.com/nashalanandas) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

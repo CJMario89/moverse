@@ -1,0 +1,11 @@
+Model Information:
+* title:	Medieval/Cyberpunk Arch (Yr1 FMP)
+* source:	https://sketchfab.com/3d-models/medievalcyberpunk-arch-yr1-fmp-99f30139abf84d1d810f12f97bb32508
+* author:	Matthew_Games (https://sketchfab.com/Matthew609)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Medieval/Cyberpunk Arch (Yr1 FMP)" (https://sketchfab.com/3d-models/medievalcyberpunk-arch-yr1-fmp-99f30139abf84d1d810f12f97bb32508) by Matthew_Games (https://sketchfab.com/Matthew609) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
