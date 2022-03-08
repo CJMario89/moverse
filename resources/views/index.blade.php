@@ -198,13 +198,13 @@
         <div class="enterButton">ENTER</div>
         <div class="footer">
             <div class="esg">
-                ESG/TWD: 
+                ESG: --$
             </div>
             <div class="hihealth">
                 Hihealth point: 0
             </div>
             <div class="mint">
-                Minted: 10000/10000
+                Calories burned: 0
             </div>
         </div>
         {{-- <video id="video" playsinline muted loop autoplay width="320" height="240" src="/videos/video.mp4" style="display:none;"></video> --}}
