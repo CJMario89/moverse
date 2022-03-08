@@ -782,7 +782,7 @@
                 addBuildingFloor(x, z, 55);
             }else if(x == -18 && z == 9){
                 buildingGeo = new THREE.BoxGeometry(3, 55, 3);
-                add_neon_playboy_logo(-18, 30, 7.5);
+                //add_neon_playboy_logo(-18, 30, 7.5);
                 const building = new THREE.Mesh(buildingGeo, buildingMat);
                 building.position.set(x, y, z);
                 scene.add(building);
