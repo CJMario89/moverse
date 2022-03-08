@@ -198,7 +198,7 @@
         <div class="enterButton">ENTER</div>
         <div class="footer">
             <div class="esg">
-                ESG/USDT: 
+                ESG/TWD: 
             </div>
             <div class="hihealth">
                 Hihealth point: 0
@@ -207,6 +207,8 @@
                 Minted: 10000/10000
             </div>
         </div>
+        {{-- <video id="video" playsinline muted loop autoplay width="320" height="240" src="/videos/video.mp4" style="display:none;"></video> --}}
+
     </body>
     <script>
         var moverse = document.querySelector(".moverse");
@@ -226,7 +228,7 @@
 
         //camera
         var windowInnerHeight = window.innerHeight -100;
-        var camera = new THREE.PerspectiveCamera(70, window.innerWidth/windowInnerHeight, 0.01, 100);
+        var camera = new THREE.PerspectiveCamera(70, window.innerWidth/windowInnerHeight, 0.01, 500);
         
         
         var scene = new THREE.Scene();
@@ -236,7 +238,7 @@
         //render
         const render = new THREE.WebGLRenderer();
         render.setSize(window.innerWidth, windowInnerHeight);
-        render.setClearColor("black");
+        render.setClearColor(0x191970);
         document.body.appendChild(render.domElement);
 
         {{-- let axes = new THREE.AxesHelper(20) // 參數為座標軸長度
@@ -252,45 +254,70 @@
         initControl();
         //streetControl();
         //loadStreetView();
+        addPlane();
+
 
         function initControl(){
-            camera.position.set(-21, 38, -21);//initial view
-            var initLook = new THREE.Vector3(0, 46, 0);//initial view
+            camera.position.set(160, 50, 0);//initial view
+            //camera.position.set(-21, 38, -21);//initial view
+            var initLook = new THREE.Vector3(0, 65, 0);//initial view
             control.target = initLook;
-            control.enableZoom = false;
+            //control.enableZoom = false;
             control.enablePan = false;
             control.autoRotate = true;
-            control.autoRotateSpeed = 1;
-            control.minPolarAngle = Math.PI * 8 / 16;
-            control.maxPolarAngle = Math.PI * 37 / 64;
+            control.autoRotateSpeed = 0.3;
+            //control.minPolarAngle = Math.PI * 72 / 128;
+            //control.maxPolarAngle = Math.PI * 73 / 128;
         }
 
         function streetControl(){
-            camera.position.set(-0.5, 0.1, -0.5);//street view
+            camera.position.set(0.5, 0.1, 0);//street view
             //camera.position.set(2, 22, 2);
             var initLook = new THREE.Vector3(0, 0.5, 0);//street view
+            scene.fog = new THREE.Fog(0x191970, 50, 100);
             //control.target = new THREE.Vector3(0, 3, 0);
             control.target = initLook;
             control.enabled = true;
             control.enableZoom = false;
             control.enablePan = false;
-            control.autoRotate = true;
-            control.autoRotateSpeed = 1;
+            control.autoRotate = false;
+            control.autoRotateSpeed = 0.1;
             control.minPolarAngle = Math.PI * 8 / 16;
             control.maxPolarAngle = Math.PI * 37 / 64;
         }
 
 
         //addPlane();
-        addLight();
-        scene.fog = new THREE.Fog(0xc2c5e6, 0, 90);
+        addPointLight();
+        scene.fog = new THREE.Fog(0x191970, 130, 170);
         addSpaceShuttle();
         addAirShip();
         addCityView();
-        addSphere();
+        //TP
+        addCubic();
         addMoverse();
         add_neon_signs_street();
+        addStar();
 
+
+        function addPointLight(){
+            const pointLight = new THREE.PointLight( 0xffd4e0, 0.3);
+            pointLight.position.set(0, 0, 0);
+            scene.add(pointLight);
+            const pointLight1 = new THREE.PointLight( 0xffd4e0, 0.3);
+            pointLight1.position.set(100, 0, 0);
+            scene.add(pointLight1);
+            const pointLight2 = new THREE.PointLight( 0xffd4e0, 0.3);
+            pointLight2.position.set(0, 0, 100);
+            scene.add(pointLight2);
+            const pointLight3 = new THREE.PointLight( 0xffd4e0, 0.3);
+            pointLight3.position.set(-100, 0, 0);
+            scene.add(pointLight3);
+            const pointLight4 = new THREE.PointLight( 0xffd4e0, 0.3);
+            pointLight4.position.set(0, 0, -100);
+            scene.add(pointLight4);
+        }
+        
 
 
         //space
@@ -398,7 +425,7 @@
             loader.load( '/3DModel/floor/scene.gltf', function ( gltf ) {
                 var floor = gltf.scene;
                 floor.position.set(0, 0, 0);
-                floor.scale.set(3*floor.scale.x, 3*floor.scale.y, 3 * floor.scale.z)
+                floor.scale.set(3*floor.scale.x, 3*floor.scale.y, 3*floor.scale.z)
                 scene.add(floor);
             }, undefined, function ( error ) {
                 console.error( error );
@@ -408,13 +435,37 @@
             const loader = new GLTFLoader();
             loader.load( '/3DModel/floor/scene.gltf', function ( gltf ) {
                 var floor = gltf.scene;
-                floor.position.set(0, -2, 0);
-                floor.scale.set(100*floor.scale.x, 100*floor.scale.y, 100 * floor.scale.z)
+                floor.position.set(0, -8, 0);
+                floor.scale.set(250*floor.scale.x, 250*floor.scale.y, 250 * floor.scale.z)
                 scene.add(floor);
             }, undefined, function ( error ) {
                 console.error( error );
             } );
         }
+
+        function addStar(){
+            for(var i = 0; i < 1000; i++){
+                const starGeo = new THREE.SphereGeometry(0.25, 10, 10);
+                const starMat = new THREE.MeshPhongMaterial({
+                    color:0xffffff
+                })
+                const star = new THREE.Mesh(starGeo, starMat);
+                const xz = randomStar();
+                var y = THREE.MathUtils.randFloat(140, 150);
+                star.position.set(xz[0], y, xz[1]);
+                scene.add(star);
+            }
+        }
+        function randomStar(){
+            var x = THREE.MathUtils.randFloat(-200, 200);
+            var z = THREE.MathUtils.randFloat(-200, 200);
+            if(Math.abs(x) + Math.abs(z) < 100){
+                return randomStar();
+            }else{
+                return [x, z];
+            }
+        }
+
 
 
         var composer = '';
@@ -446,6 +497,12 @@
         var enterphase4 = 0;
         var enterphase5 = 0;
 
+
+        const stats = Stats();
+        document.body.appendChild(stats.dom)
+
+        var videoTexture = '';
+
         animation();
         function animation(){
             control.update();
@@ -455,12 +512,16 @@
             AirShipMove();
 
             enterStreet();
-            
+            if(videoTexture != ''){
+                videoTexture.needsUpdate = true;
+            }
+            stats.update();
         }
 
         var distance = 0;
         var enterDistance = 0;
         var cameraLookAtY = 30;
+        var enterType = 0;
 
         var enterButton = document.querySelector(".enterButton");
         var moverse = document.querySelector(".moverse");
@@ -473,66 +534,42 @@
             control.maxPolarAngle = Math.PI;
             enterButton.remove();
             if(camera.position.z <= 0){
-                if(camera.position.x > 0){
-                    enterDistance = new THREE.Vector3((30 - camera.position.x) / 80, (38 - camera.position.y) / 80, (1 - camera.position.z) / 80);
-                }else{
-                    enterDistance = new THREE.Vector3((30 - camera.position.x) / 80, (38 - camera.position.y) / 80, (1 - camera.position.z) / 80);
-                }
+                enterDistance = new THREE.Vector3((0 - camera.position.x) / 80, (90 - camera.position.y) / 80, (55 - camera.position.z) / 80);
             }else{
-                // doesnt matter
-                enterDistance = new THREE.Vector3((30 - camera.position.x) / 80, (38 - camera.position.y) / 80, (1 - camera.position.z) / 80);
+                enterDistance = new THREE.Vector3((0 - camera.position.x) / 80, (90 - camera.position.y) / 80, (-55 - camera.position.z) / 80);
             }
         });
 
 
         function enterStreet(){
             if(enterphase1){
-                if(camera.position.z <= 0){
-                    camera.position.add(enterDistance);
-                }else{
-                    enterDistance = new THREE.Vector3((0 - camera.position.x) / 80, (38 - camera.position.y) / 80, (30 - camera.position.z) / 80);
-                    enterphase2 = 1;
-                    enterphase1 = 0;
-                }
-            }
-            if(enterphase2){
-                if(camera.position.z < 28){
-                    camera.position.add(enterDistance);
-                }else{
-                    camera.position.set(0, 38, 28);
-                    enterDistance = new THREE.Vector3((0 - camera.position.x) / 80, (30 - camera.position.y) / 80, (0 - camera.position.z) / 80);
-                    enterphase3 = 1;
-                    enterphase2 = 0;
-                }
-            }
-            if(enterphase3){
-                if(camera.position.z > 0){
-                    camera.position.add(enterDistance);
-                }else{
-                    camera.position.set(0, 30, 0);
-                    //scene.fog = new THREE.Fog(0xc2c5e6, 0, 35);
-                    enterDistance = new THREE.Vector3((-0.5 - camera.position.x) / 180, (0.1 - camera.position.y) / 180, (-0.5 - camera.position.z) / 180);
-                    enterphase4 = 1;
-                    enterphase3 = 0;
-                }
-            }
-            if(enterphase4){
-                if(camera.position.y > 0.2){
+                if(Math.abs(camera.position.x) <= 1){
                     camera.position.add(enterDistance);
                 }else{
                     distance = 0.35;
-                    enterphase5 = 1;
-                    enterphase4 = 0;
+                    enterphase2 = 1;
+                    enterphase1 = 0;
                     loadStreetView();
                 }
-            }if(enterphase5){
+            }
+            if(enterphase2){
                 if(control.target.y > 0.5){
                     distance -= 0.00001;
                     cameraLookAtY -= distance;
                     control.target = new THREE.Vector3(0, cameraLookAtY, 0);
                 }else{
+                    enterDistance = new THREE.Vector3((0.5 - camera.position.x) / 180, (0.1 - camera.position.y) / 180, (0 - camera.position.z) / 180);
+                    enterphase3 = 1;
+                    enterphase2 = 0;
+                    control.target = new THREE.Vector3(0, 0.5, 0);
+                }
+            }if(enterphase3){
+                if(camera.position.y > 0.5){
+                    camera.position.add(enterDistance);
+                }else{
                     streetControl();
-                    enterphase5 = 0;
+                    addLight();
+                    enterphase3 = 0;
                 }
             }
         }
@@ -548,21 +585,27 @@
 
         //addLight
         function addLight(){
-            const light = new THREE.DirectionalLight( 0xffffff, 1);
-            light.position.set(0, 60, 0);
+            const light = new THREE.DirectionalLight( 0xffd4e0, 0.5);
+            light.position.set(0, 300, 0);
             scene.add(light);
-            const light1 = new THREE.DirectionalLight( 0xffffff, 1);
-            light1.position.set(60, 60, 60);
+            const light1 = new THREE.DirectionalLight( 0xffd4e0, 0.5);
+            light1.position.set(300, 300, 300);
             scene.add(light1);
-            const light2 = new THREE.DirectionalLight( 0xffffff, 1);
-            light2.position.set(60, 60, -60);
+            const light2 = new THREE.DirectionalLight( 0xffd4e0, 0.5);
+            light2.position.set(300, 300, -300);
             scene.add(light2);
-            const light3 = new THREE.DirectionalLight( 0xffffff, 1);
-            light3.position.set(-60, 60, 60);
+            const light3 = new THREE.DirectionalLight( 0xffd4e0, 0.5);
+            light3.position.set(-300, 300, 300);
             scene.add(light3);
-            const light4 = new THREE.DirectionalLight( 0xffffff, 1);
-            light4.position.set(-60, 60, -60);
+            const light4 = new THREE.DirectionalLight( 0xffd4e0, 0.5);
+            light4.position.set(-300, 300, -300);
             scene.add(light4);
+
+            {{-- const light = new THREE.AmbientLight( 0xffd4e0, 1, 200 );
+            light.position.set( 0, 0, 0 );
+            scene.add( light ); --}}
+
+            
 
             const neon1 = new THREE.AmbientLight( 0xffd4e0, 1);
             neon1.position.set(-20, 30, -30);
@@ -576,30 +619,39 @@
 
 
 
-
-
-
-        //addPlane
         
 
 
         //addSphere
         function addSphere(){
-            const sphereGeo = new THREE.SphereGeometry(65, 100, 100);
+            //const yosora = new THREE.TextureLoader().load("{{asset('/images/yosora.jpg')}}");
+            const sphereGeo = new THREE.SphereGeometry(200, 100, 100);
             const sphereMat = new THREE.MeshStandardMaterial({
-                //map: cyberPunk,
-                color:0xFFA07A,
+                //map: yosora,
+                //color:0xFFA07A,
+                color:0x2a2a35,
                 side:THREE.DoubleSide
             })
             const sphere = new THREE.Mesh(sphereGeo, sphereMat);
             scene.add(sphere);
         }
 
+        //addCubic
+        function addCubic(){
+            const cubicGeo = new THREE.BoxGeometry(1500, 400, 1500);
+            const cubicMat = new THREE.MeshBasicMaterial({
+                color:0x2a2a35,
+                side:THREE.DoubleSide
+            });
+            const cubic = new THREE.Mesh(cubicGeo, cubicMat);
+            scene.add(cubic);
+        }
+
 
         //addMoverse
         function addMoverse(){
             const moverseJpg = new THREE.TextureLoader().load("{{asset('/images/moverse.jpg')}}");
-            const moverseGeo = new THREE.BoxGeometry(15, 18.75, 15);
+            const moverseGeo = new THREE.BoxGeometry(81, 101.25, 81);
             var moverseMat = [];
             for(var i = 0; i < 6; i++){
                 if(i == 2 || i == 3){
@@ -614,7 +666,7 @@
             }
             
             const moverse = new THREE.Mesh(moverseGeo, moverseMat);
-            moverse.position.set(0, 45, 0)
+            moverse.position.set(0, 90, 0)
             scene.add(moverse);
 
 
@@ -634,10 +686,10 @@
 
 
         function addCityView(){
-
+            //TP
             var buildingPositionY = 0;
-            for(var i = 0; i < 18; i++){
-                for(var j = 0; j < 18; j++){
+            for(var i = 0; i < 70; i++){
+                for(var j = 0; j < 70; j++){
                     //rand 40%
                     if(i > 2 && j > 2){
                         var rand = THREE.MathUtils.randFloat(0, 1000);
@@ -651,38 +703,27 @@
                             addBuilding(i, buildingPositionY, -j, height);
 
                         }else{
-                            if(rand > 680 && rand < 750){
-                                var height = 80;
+                            if(rand > 745 && rand < 750){
+                                var height = 70;
                                 if(i == 0 || j == 0){//repeat side
                                     height = 50;
                                     addBuilding(i, buildingPositionY, j, height);
                                     addBuilding(-i , buildingPositionY, -j, height);
                                 }else if((Math.abs(i) + Math.abs(j)) < 16){
-                                    height = 55;
+                                    height = 45;
                                     addBuilding(i, buildingPositionY, j, height);
                                     addBuilding(-i, buildingPositionY, -j, height);
                                     addBuilding(-i, buildingPositionY, j, height);
                                     addBuilding(i, buildingPositionY, -j, height);
                                 }else{
-                                    height = 80;
+                                    height = 70;
                                     addBuilding(i, buildingPositionY, j, height);
                                     addBuilding(-i, buildingPositionY, -j, height);
                                     addBuilding(-i, buildingPositionY, j, height);
                                     addBuilding(i, buildingPositionY, -j, height);
                                 }
-                            }else if(rand < 680 && rand > 500){
+                            }else if(rand < 680 && rand > 640){
                                 var height = 45;
-                                if(i == 0 || j == 0){//repeat side
-                                    addBuilding(i, buildingPositionY, j, height);
-                                    addBuilding(-i , buildingPositionY, -j, height);
-                                }else{
-                                    addBuilding(i, buildingPositionY, j, height);
-                                    addBuilding(-i, buildingPositionY, -j, height);
-                                    addBuilding(-i, buildingPositionY, j, height);
-                                    addBuilding(i, buildingPositionY, -j, height);
-                                }
-                            }else if(rand > 750){
-                                var height = 40;
                                 if(i == 0 || j == 0){//repeat side
                                     addBuilding(i, buildingPositionY, j, height);
                                     addBuilding(-i , buildingPositionY, -j, height);
@@ -704,7 +745,8 @@
             z = await z * 3;
             //height 5~10
             const buildingJpg = new THREE.TextureLoader().load("{{asset('/images/building.jpg')}}");
-            var buildingHeight = randomBuildingHeight(height);
+            var buildingHeight = randomBuildingHeight(height) / 2;
+            y = buildingHeight / 2;
             var buildingGeo = new THREE.BoxGeometry(3, buildingHeight, 3);
             const buildingMat = new THREE.MeshPhongMaterial({
                 color: 0x000000,
@@ -717,87 +759,87 @@
 
             //add neon sign
             if(x == 30 && z == 24){
-                buildingGeo = new THREE.BoxGeometry(3, 100, 3);
-                add_cyberpunk_animated_japanese_led_neon_sign(34, 36, 24);
+                buildingGeo = new THREE.BoxGeometry(3, 50, 3);
+                add_cyberpunk_animated_japanese_led_neon_sign(34, 30, 24);
                 const building = new THREE.Mesh(buildingGeo, buildingMat);
                 building.position.set(x, y, z);
                 scene.add(building);
-                //addBuildingFloor(x, z, 100);
+                addBuildingFloor(x, z, 50);
             }else if(x == -24 && z == -30){
-                buildingGeo = new THREE.BoxGeometry(3, 90, 3);
+                buildingGeo = new THREE.BoxGeometry(3, 50, 3);
                 add_cyberpunk_animated_japanese_led_neon_sign(-28, 32, -30);
                 const building = new THREE.Mesh(buildingGeo, buildingMat);
                 building.position.set(x, y, z);
                 scene.add(building);
-                //addBuildingFloor(x, z, 90);
+                addBuildingFloor(x, z, 50);
             }else if(x == 9 && z == 18){
-                buildingGeo = new THREE.BoxGeometry(3, 65, 3);
+                buildingGeo = new THREE.BoxGeometry(3, 55, 3);
                 add_japanese_neon_street_sign(9, 26, 18);
                 const building = new THREE.Mesh(buildingGeo, buildingMat);
                 building.position.set(x, y, z);
                 scene.add(building);
-                //addBuildingFloor(x, z, 65);
+                addBuildingFloor(x, z, 55);
             }else if(x == -18 && z == 9){
-                buildingGeo = new THREE.BoxGeometry(3, 65, 3);
+                buildingGeo = new THREE.BoxGeometry(3, 55, 3);
                 add_neon_playboy_logo(-18, 30, 7.5);
                 const building = new THREE.Mesh(buildingGeo, buildingMat);
                 building.position.set(x, y, z);
                 scene.add(building);
-                //addBuildingFloor(x, z, 65);
+                addBuildingFloor(x, z, 65);
             }else if(x == 33 && z == 9){
-                buildingGeo = new THREE.BoxGeometry(3, 70, 3);
+                buildingGeo = new THREE.BoxGeometry(3, 50, 3);
                 add_mario_neon_sign(33, 36, 9);
                 const building = new THREE.Mesh(buildingGeo, buildingMat);
                 building.position.set(x, y, z);
                 scene.add(building);
-                //addBuildingFloor(x, z, 70);
+                addBuildingFloor(x, z, 50);
             }else if(x == -15 && z == -15){
-                buildingGeo = new THREE.BoxGeometry(3, 60, 3);
+                buildingGeo = new THREE.BoxGeometry(3, 50, 3);
                 add_letras_neon(-16, 33, -14);
                 const building = new THREE.Mesh(buildingGeo, buildingMat);
                 building.position.set(x, y, z);
                 scene.add(building);
-                //addBuildingFloor(x, z, 60);
+                addBuildingFloor(x, z, 50);
             }else if(x == 15 && z == 36){
-                buildingGeo = new THREE.BoxGeometry(3, 60, 3);
+                buildingGeo = new THREE.BoxGeometry(3, 50, 3);
                 add_vb_sign_small(15, 32, 34);
                 const building = new THREE.Mesh(buildingGeo, buildingMat);
                 building.position.set(x, y, z);
                 scene.add(building);
-                //addBuildingFloor(x, z, 60);
+                addBuildingFloor(x, z, 50);
             }else if(x == 15 && z == -36){
-                buildingGeo = new THREE.BoxGeometry(3, 60, 3);
+                buildingGeo = new THREE.BoxGeometry(3, 50, 3);
                 add_neon_signs(15, 28, -34);
                 const building = new THREE.Mesh(buildingGeo, buildingMat);
                 building.position.set(x, y, z);
                 scene.add(building);
-                //addBuildingFloor(x, z, 60);
+                addBuildingFloor(x, z, 50);
             }else if(x == -9 && z == -33){
-                buildingGeo = new THREE.BoxGeometry(3, 70, 3);
+                buildingGeo = new THREE.BoxGeometry(3, 50, 3);
                 add_japanese_sign_board_014(-8, 33, -33);
                 const building = new THREE.Mesh(buildingGeo, buildingMat);
                 building.position.set(x, y, z);
                 scene.add(building);
-                //addBuildingFloor(x, z, 70);
+                addBuildingFloor(x, z, 50);
             }else if(x == -18 && z == 30){
-                buildingGeo = new THREE.BoxGeometry(3, 70, 3);
+                buildingGeo = new THREE.BoxGeometry(3, 50, 3);
                 add_neon_sushi_sign(-18, 30, 25);
                 const building = new THREE.Mesh(buildingGeo, buildingMat);
                 building.position.set(x, y, z);
                 scene.add(building);
-                //addBuildingFloor(x, z, 70);
+                addBuildingFloor(x, z, 50);
             }else if(x == 24 && z == -30){
-                buildingGeo = new THREE.BoxGeometry(3, 85, 3);
+                buildingGeo = new THREE.BoxGeometry(3, 50, 3);
                 add_small_neon_sign(27, 40, -30);
                 const building = new THREE.Mesh(buildingGeo, buildingMat);
                 building.position.set(x, y, z);
                 scene.add(building);
-                //addBuildingFloor(x, z, 85);
+                addBuildingFloor(x, z, 50);
             }else{
                 const building = new THREE.Mesh(buildingGeo, buildingMat);
                 building.position.set(x, y, z);
                 scene.add(building);
-                //addBuildingFloor(x, z, height);
+                addBuildingFloor(x, z, height);
             }
             //add building floor
             
@@ -807,7 +849,7 @@
         }
 
         function randomBuildingHeight(height){
-            var buildingHeight = THREE.MathUtils.randFloat(height - 5, height);
+            var buildingHeight = THREE.MathUtils.randFloat(height - 15, height);
             //if(buildingHeight > 25 || buildingHeight < 20){
                 return buildingHeight;
             //}else{
@@ -819,21 +861,22 @@
         function addBuildingFloor(x, z, height){
             var rand = THREE.MathUtils.randFloat(0, 1000);
             var buildingFloorEdgeMat = '';
-            if(rand > 750){
+            if(rand > 875){
                 buildingFloorEdgeMat = new THREE.LineBasicMaterial( { color: 0x9370DB, linewidth: 2 } );
-            }else if(rand < 750 && rand < 500){
+            }else if(rand < 875 && rand > 750){
                 buildingFloorEdgeMat = new THREE.LineBasicMaterial( { color: 0xDDA0DD, linewidth: 2 } );
-            }else if(rand < 500 && rand > 250){
+            }else if(rand < 750 && rand > 625){
                 buildingFloorEdgeMat = new THREE.LineBasicMaterial( { color: 0xFF6347, linewidth: 2 } );
-            }else{
+            }else if(rand > 500 && rand < 625){
                 buildingFloorEdgeMat = new THREE.LineBasicMaterial( { color: 0xfffff, linewidth: 2 } );
             }
             if(height % 2 == 1){
                 height += 1;
             }
+            //TP
             for(var i = 0; i < (height / 2) - 1; i++){
-                if(i % 2 == 1){
-                    const buildingFloorGeo = new THREE.BoxGeometry(3, 1, 3);
+                if(i % 1002 == 1){
+                    const buildingFloorGeo = new THREE.BoxGeometry(3.1, 1, 3.1);
                     var buildingFloorEdge = new THREE.EdgesGeometry( buildingFloorGeo );
                     var buildingFloorWireframe = new THREE.LineSegments( buildingFloorEdge, buildingFloorEdgeMat );
                     buildingFloorWireframe.position.set(x, i, z);
@@ -853,9 +896,9 @@
                 element.scale.set(3*element.scale.x, 3*element.scale.y, 3*element.scale.z)
                 scene.add(element);
                 if(x > 0){
-                    element.lookAt(new THREE.Vector3(30, 40, -100));
+                    element.lookAt(new THREE.Vector3(30, 36, -100));
                 }else{
-                    element.lookAt(new THREE.Vector3(-24, 40, 100));
+                    element.lookAt(new THREE.Vector3(-24, 36, 100));
                 }
             }, undefined, function ( error ) {
                 console.error( error );
@@ -1010,20 +1053,20 @@
             //scene.fog = new THREE.Fog(0xc2c5e6, 0, 50);
             //control.enabled = true;
             addFloor();
-            addPlane();
-            add_dragon_gate_inn_with_neon();
-            //add_building_27();
+            //add_dragon_gate_inn_with_neon();
+            add_building_27();
             //add_cy1();
             //add_neon_stage();
             //add_virtual_stage_cyberpunk();
             add_soda_vending_machine();
             add_stairs__road_2_nowhere__free_3d_low_poly_model();
+            add_video();
 
-            control.enableZoom = true;
+            {{-- control.enableZoom = true;
             control.enablePan = true;
             control.autoRotate = false;
             control.minPolarAngle = 0;
-            control.maxPolarAngle = Math.PI;
+            control.maxPolarAngle = Math.PI; --}}
         }
 
         //add street view
@@ -1114,7 +1157,7 @@
             const loader = new GLTFLoader();
             loader.load( '/3DModel/stairs__road_2_nowhere__free_3d_low-poly_model/scene.gltf', function ( gltf ) {
                 var element = gltf.scene;
-                element.position.set(1, 0, -10);
+                element.position.set(0, 0, -10);
                 element.scale.set(2*element.scale.x, 2*element.scale.y, 2*element.scale.z)
                 element.lookAt(new THREE.Vector3(0, 0, 100));
                 scene.add(element);
@@ -1129,20 +1172,45 @@
 
 
         //add video
-        add_video_plane();
+
+        function add_video(){
+            var video = document.createElement("video");
+            video.src = "{{asset('videos/video.mp4')}}";
+            video.addEventListener("playing", function(){
+                add_video_plane(video);
+            });
+            video.loop = true;
+            video.width = 3840;
+            video.height = 2160;
+            video.muted = true;
+            video.play();
+        }
+        
 
 
-
-        function add_video_plane(){
-            const videoPlaneGeo = new THREE.PlaneGeometry(5, 5);
+        function add_video_plane(video){
+            videoTexture = new THREE.VideoTexture(video);
+            const videoPlaneGeo = new THREE.PlaneGeometry(14, 8);
             const videoPlaneMat = new THREE.MeshBasicMaterial({
-                color: "white",
+                //color: "white",
+                map: videoTexture,
                 side: THREE.FrontSide
             });
+            
             const videoPlane = new THREE.Mesh(videoPlaneGeo, videoPlaneMat);
-            videoPlane.position.set(-5, 1, 0);
+            videoPlane.position.set(-7, 4, 0);
             videoPlane.rotation.y = 0.5 * Math.PI;
             scene.add(videoPlane);
         }
+        //TP
+        {{-- camera.position.set(160, 50, 0);
+        control.enableZoom = true;
+        control.enablePan = true;
+        control.autoRotateSpeed = 0.1;
+        control.minPolarAngle = 0;
+        control.maxPolarAngle = Math.PI;
+        loadStreetView();
+        control.autoRotate = true; --}}
+
     </script>
         
