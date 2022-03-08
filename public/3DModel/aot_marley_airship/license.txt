@@ -1,0 +1,11 @@
+Model Information:
+* title:	AOT Marley Airship
+* source:	https://sketchfab.com/3d-models/aot-marley-airship-0c79a8305c524872a6fd55f92425eccf
+* author:	Solarliu (https://sketchfab.com/jacky15621419)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "AOT Marley Airship" (https://sketchfab.com/3d-models/aot-marley-airship-0c79a8305c524872a6fd55f92425eccf) by Solarliu (https://sketchfab.com/jacky15621419) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

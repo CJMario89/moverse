@@ -290,7 +290,8 @@
         //addPlane();
         addPointLight();
         scene.fog = new THREE.Fog(0x191970, 130, 170);
-        addSpaceShuttle();
+        //FPS
+        //addSpaceShuttle();
         addAirShip();
         addCityView();
         //TP
@@ -301,7 +302,7 @@
         addStar();
 
         addFloor();
-        add_soda_vending_machine();
+        //add_soda_vending_machine();
         add_stairs__road_2_nowhere__free_3d_low_poly_model();
         add_video_plane_base();
 
@@ -386,28 +387,28 @@
 
         function addAirShip(){
             const loader = new GLTFLoader();
-            loader.load( '/3DModel/airship/scene.gltf', function ( gltf ) {
+            loader.load( '/3DModel/aot_marley_airship/scene.gltf', function ( gltf ) {
                 airShip = gltf.scene;
-                airShip.position.set(-10, 30, 30);
-                airShip.scale.set(0.05*airShip.scale.x, 0.05*airShip.scale.y, 0.05 * airShip.scale.z)
+                airShip.position.set(50, 30, 70);
+                airShip.scale.set(0.005*airShip.scale.x, 0.005*airShip.scale.y, 0.005 * airShip.scale.z)
                 scene.add( airShip );
                 airShip1 = airShip.clone(true);
-                airShip1.position.set(-40, 25, 0);
+                airShip1.position.set(-40, 25, 60);
                 airShip1.scale.set(1*airShip1.scale.x, 1*airShip1.scale.y, 1*airShip1.scale.z)
                 scene.add( airShip1 );
                 airShip2 = airShip.clone(true);
                 airShip2.lookAt(new THREE.Vector3(0, 35, 50));
-                airShip2.position.set(30, 35, -30);
+                airShip2.position.set(50, 35, -40);
                 airShip2.scale.set(1*airShip2.scale.x, 1*airShip2.scale.y, 1*airShip2.scale.z)
                 scene.add( airShip2 );
                 airShip3 = airShip.clone(true);
                 airShip3.lookAt(new THREE.Vector3(-100, 35, 50));
-                airShip3.position.set(-35, 35, -35);
+                airShip3.position.set(-35, 35, -75);
                 airShip3.scale.set(1*airShip3.scale.x, 1*airShip3.scale.y, 1*airShip3.scale.z)
                 scene.add( airShip3 );
                 airShip4 = airShip.clone(true);
                 airShip4.lookAt(new THREE.Vector3(0, 35, 0));
-                airShip4.position.set(40, 25, 5);
+                airShip4.position.set(40, 25, 95);
                 airShip4.scale.set(1*airShip4.scale.x, 1*airShip4.scale.y, 1*airShip4.scale.z)
                 scene.add( airShip4 );
             }, undefined, function ( error ) {
@@ -710,6 +711,7 @@
                         if((i == 10 && j == 8) || (i == 8 && j == 10) || (i == 3 && j == 6) || (i == 6 && j == 3) || (i == 11 && j == 3) || (i == 5 && j == 5) || (i == 5 && j == 12) || (i == 3 && j == 11) || (i == 6 && j == 10) || (i == 8 && j == 10)){
                             //add neon
                             var height = 55;
+                            //FPS
                             addBuilding(i, buildingPositionY, j, height);
                             addBuilding(-i, buildingPositionY, -j, height);
                             addBuilding(-i, buildingPositionY, j, height);
@@ -771,21 +773,7 @@
 
 
             //add neon sign
-            if(x == 30 && z == 24){
-                buildingGeo = new THREE.BoxGeometry(3, 50, 3);
-                add_cyberpunk_animated_japanese_led_neon_sign(34, 30, 24);
-                const building = new THREE.Mesh(buildingGeo, buildingMat);
-                building.position.set(x, y, z);
-                scene.add(building);
-                addBuildingFloor(x, z, 50);
-            }else if(x == -24 && z == -30){
-                buildingGeo = new THREE.BoxGeometry(3, 50, 3);
-                add_cyberpunk_animated_japanese_led_neon_sign(-28, 32, -30);
-                const building = new THREE.Mesh(buildingGeo, buildingMat);
-                building.position.set(x, y, z);
-                scene.add(building);
-                addBuildingFloor(x, z, 50);
-            }else if(x == 9 && z == 18){
+            if(x == 9 && z == 18){
                 buildingGeo = new THREE.BoxGeometry(3, 55, 3);
                 add_japanese_neon_street_sign(9, 26, 18);
                 const building = new THREE.Mesh(buildingGeo, buildingMat);
@@ -801,7 +789,7 @@
                 addBuildingFloor(x, z, 65);
             }else if(x == 33 && z == 9){
                 buildingGeo = new THREE.BoxGeometry(3, 50, 3);
-                add_mario_neon_sign(33, 36, 9);
+                //add_mario_neon_sign(33, 36, 9);
                 const building = new THREE.Mesh(buildingGeo, buildingMat);
                 building.position.set(x, y, z);
                 scene.add(building);
@@ -820,13 +808,6 @@
                 building.position.set(x, y, z);
                 scene.add(building);
                 addBuildingFloor(x, z, 50);
-            }else if(x == 15 && z == -36){
-                buildingGeo = new THREE.BoxGeometry(3, 50, 3);
-                add_neon_signs(15, 28, -34);
-                const building = new THREE.Mesh(buildingGeo, buildingMat);
-                building.position.set(x, y, z);
-                scene.add(building);
-                addBuildingFloor(x, z, 50);
             }else if(x == -9 && z == -33){
                 buildingGeo = new THREE.BoxGeometry(3, 50, 3);
                 add_japanese_sign_board_014(-8, 33, -33);
@@ -837,13 +818,6 @@
             }else if(x == -18 && z == 30){
                 buildingGeo = new THREE.BoxGeometry(3, 50, 3);
                 add_neon_sushi_sign(-18, 30, 25);
-                const building = new THREE.Mesh(buildingGeo, buildingMat);
-                building.position.set(x, y, z);
-                scene.add(building);
-                addBuildingFloor(x, z, 50);
-            }else if(x == 24 && z == -30){
-                buildingGeo = new THREE.BoxGeometry(3, 50, 3);
-                add_small_neon_sign(27, 40, -30);
                 const building = new THREE.Mesh(buildingGeo, buildingMat);
                 building.position.set(x, y, z);
                 scene.add(building);
@@ -993,19 +967,6 @@
             } );
         }
 
-        function add_neon_signs(x, y, z){
-            const loader = new GLTFLoader();
-            loader.load( '/3DModel/neon_signs/scene.gltf', function ( gltf ) {
-                var element = gltf.scene;
-                element.position.set(x, y, z);
-                element.scale.set(0.1*element.scale.x, 0.1*element.scale.y, 0.1*element.scale.z)
-                element.lookAt(new THREE.Vector3(100, 32, -36));
-                scene.add(element);
-            }, undefined, function ( error ) {
-                console.error( error );
-            } );
-        }
-
         function add_japanese_sign_board_014(x, y, z){
             const loader = new GLTFLoader();
             loader.load( '/3DModel/japanese_sign_board_014/scene.gltf', function ( gltf ) {
@@ -1026,19 +987,6 @@
                 element.position.set(x, y, z);
                 element.scale.set(0.01*element.scale.x, 0.01*element.scale.y, 0.01*element.scale.z)
                 element.lookAt(new THREE.Vector3(-30, 30, 100));
-                scene.add(element);
-            }, undefined, function ( error ) {
-                console.error( error );
-            } );
-        }
-
-        function add_small_neon_sign(x, y, z){
-            const loader = new GLTFLoader();
-            loader.load( '/3DModel/small_neon_sign/scene.gltf', function ( gltf ) {
-                var element = gltf.scene;
-                element.position.set(x, y, z);
-                element.scale.set(1*element.scale.x, 1*element.scale.y, 1*element.scale.z)
-                element.lookAt(new THREE.Vector3(-100, 45, 100));
                 scene.add(element);
             }, undefined, function ( error ) {
                 console.error( error );
@@ -1206,7 +1154,7 @@
             video.addEventListener("playing", function(){
                 add_video_plane();
             });
-            video.loop = true;
+            video.loop = false;
             video.width = 384;
             video.height = 216;
             video.muted = true;
