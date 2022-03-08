@@ -262,12 +262,12 @@
             //camera.position.set(-21, 38, -21);//initial view
             var initLook = new THREE.Vector3(0, 65, 0);//initial view
             control.target = initLook;
-            //control.enableZoom = false;
+            control.enableZoom = false;
             control.enablePan = false;
             control.autoRotate = true;
             control.autoRotateSpeed = 0.3;
-            //control.minPolarAngle = Math.PI * 72 / 128;
-            //control.maxPolarAngle = Math.PI * 73 / 128;
+            control.minPolarAngle = Math.PI * 63 / 128;
+            control.maxPolarAngle = Math.PI * 67 / 128;
         }
 
         function streetControl(){
@@ -297,7 +297,13 @@
         addCubic();
         addMoverse();
         add_neon_signs_street();
+        add_taiwan_style_signboard_lowpoly();
         addStar();
+
+        addFloor();
+        add_soda_vending_machine();
+        add_stairs__road_2_nowhere__free_3d_low_poly_model();
+        add_video_plane_base();
 
 
         function addPointLight(){
@@ -435,7 +441,7 @@
             const loader = new GLTFLoader();
             loader.load( '/3DModel/floor/scene.gltf', function ( gltf ) {
                 var floor = gltf.scene;
-                floor.position.set(0, -8, 0);
+                floor.position.set(0, -7, 0);
                 floor.scale.set(250*floor.scale.x, 250*floor.scale.y, 250 * floor.scale.z)
                 scene.add(floor);
             }, undefined, function ( error ) {
@@ -444,21 +450,21 @@
         }
 
         function addStar(){
-            for(var i = 0; i < 1000; i++){
-                const starGeo = new THREE.SphereGeometry(0.25, 10, 10);
+            for(var i = 0; i < 450; i++){
+                const starGeo = new THREE.SphereGeometry(0.25, 3, 3);
                 const starMat = new THREE.MeshPhongMaterial({
                     color:0xffffff
                 })
                 const star = new THREE.Mesh(starGeo, starMat);
                 const xz = randomStar();
-                var y = THREE.MathUtils.randFloat(140, 150);
+                var y = THREE.MathUtils.randFloat(135, 145);
                 star.position.set(xz[0], y, xz[1]);
                 scene.add(star);
             }
         }
         function randomStar(){
-            var x = THREE.MathUtils.randFloat(-200, 200);
-            var z = THREE.MathUtils.randFloat(-200, 200);
+            var x = THREE.MathUtils.randFloat(-145, 145);
+            var z = THREE.MathUtils.randFloat(-145, 145);
             if(Math.abs(x) + Math.abs(z) < 100){
                 return randomStar();
             }else{
@@ -502,7 +508,7 @@
         document.body.appendChild(stats.dom)
 
         var videoTexture = '';
-
+        var videoTextureFlag = 0;
         animation();
         function animation(){
             control.update();
@@ -512,13 +518,11 @@
             AirShipMove();
 
             enterStreet();
-            if(videoTexture != ''){
-                videoTexture.needsUpdate = true;
-            }
             stats.update();
         }
 
         var distance = 0;
+        var enterAngle = 0;
         var enterDistance = 0;
         var cameraLookAtY = 30;
         var enterType = 0;
@@ -533,23 +537,29 @@
             control.minPolarAngle = 0;
             control.maxPolarAngle = Math.PI;
             enterButton.remove();
-            if(camera.position.z <= 0){
-                enterDistance = new THREE.Vector3((0 - camera.position.x) / 80, (90 - camera.position.y) / 80, (55 - camera.position.z) / 80);
-            }else{
-                enterDistance = new THREE.Vector3((0 - camera.position.x) / 80, (90 - camera.position.y) / 80, (-55 - camera.position.z) / 80);
-            }
+            enterAngle = control.getAzimuthalAngle();
         });
+
+
+        //control.rotate(degrees); (orbitControls)
+        //add
+        //this.rotate = function(degrees) {
+        //    rotateLeft(degrees);
+   		// 	this.update();
+        //}
 
 
         function enterStreet(){
             if(enterphase1){
-                if(Math.abs(camera.position.x) <= 1){
-                    camera.position.add(enterDistance);
+                if(Math.abs(camera.position.z) <= 0 && camera.position.x > 0){
+                    control.rotate(enterAngle);
+                    //camera.position.add(enterDistance);
                 }else{
-                    distance = 0.35;
                     enterphase2 = 1;
                     enterphase1 = 0;
                     loadStreetView();
+                    enterDistance = new THREE.Vector3((0.5 - camera.position.x) / 180, (0.1 - camera.position.y) / 180, (0 - camera.position.z) / 180);
+                    distance = 0.35;
                 }
             }
             if(enterphase2){
@@ -558,10 +568,9 @@
                     cameraLookAtY -= distance;
                     control.target = new THREE.Vector3(0, cameraLookAtY, 0);
                 }else{
-                    enterDistance = new THREE.Vector3((0.5 - camera.position.x) / 180, (0.1 - camera.position.y) / 180, (0 - camera.position.z) / 180);
+                    control.target = new THREE.Vector3(0, 0.5, 0);
                     enterphase3 = 1;
                     enterphase2 = 0;
-                    control.target = new THREE.Vector3(0, 0.5, 0);
                 }
             }if(enterphase3){
                 if(camera.position.y > 0.5){
@@ -569,6 +578,10 @@
                 }else{
                     streetControl();
                     addLight();
+                    setTimeout(function(){
+                        add_video();
+                        video.play();
+                    }, 1000);
                     enterphase3 = 0;
                 }
             }
@@ -1046,20 +1059,31 @@
             } );
         }
 
+        function add_taiwan_style_signboard_lowpoly(){
+            const loader = new GLTFLoader();
+            loader.load( '/3DModel/taiwan_style_signboard_lowpoly/scene.gltf', function ( gltf ) {
+                var element = gltf.scene;
+                element.position.set(30, 5, 5);
+                element.scale.set(1*element.scale.x, 1*element.scale.y, 1*element.scale.z)
+                element.lookAt(new THREE.Vector3(30, 5, 100));
+                scene.add(element);
+            }, undefined, function ( error ) {
+                console.error( error );
+            } );
+        }
+
         
         //load street view
         function loadStreetView(){
             //scene.fog = new THREE.Fog(0x000000, 0, 50);
             //scene.fog = new THREE.Fog(0xc2c5e6, 0, 50);
             //control.enabled = true;
-            addFloor();
             //add_dragon_gate_inn_with_neon();
-            add_building_27();
+            //add_building_27();
             //add_cy1();
             //add_neon_stage();
             //add_virtual_stage_cyberpunk();
-            add_soda_vending_machine();
-            add_stairs__road_2_nowhere__free_3d_low_poly_model();
+            
             add_video();
 
             {{-- control.enableZoom = true;
@@ -1166,29 +1190,31 @@
             } );
         }
 
+        
+
 
 
 
 
 
         //add video
+        var video = '';
 
         function add_video(){
-            var video = document.createElement("video");
+            video = document.createElement("video");
             video.src = "{{asset('videos/video.mp4')}}";
             video.addEventListener("playing", function(){
-                add_video_plane(video);
+                add_video_plane();
             });
             video.loop = true;
-            video.width = 3840;
-            video.height = 2160;
+            video.width = 384;
+            video.height = 216;
             video.muted = true;
-            video.play();
         }
         
 
 
-        function add_video_plane(video){
+        function add_video_plane(){
             videoTexture = new THREE.VideoTexture(video);
             const videoPlaneGeo = new THREE.PlaneGeometry(14, 8);
             const videoPlaneMat = new THREE.MeshBasicMaterial({
@@ -1201,7 +1227,21 @@
             videoPlane.position.set(-7, 4, 0);
             videoPlane.rotation.y = 0.5 * Math.PI;
             scene.add(videoPlane);
+            videoTexture.needsUpdate = false;
         }
+
+        function add_video_plane_base(){
+            const videoPlaneGeo = new THREE.PlaneGeometry(14, 8);
+            const videoPlaneMat = new THREE.MeshBasicMaterial({
+                color: "black",
+                side: THREE.DoubleSide
+            });
+            const videoPlane = new THREE.Mesh(videoPlaneGeo, videoPlaneMat);
+            videoPlane.position.set(-7, 4, 0);
+            videoPlane.rotation.y = 0.5 * Math.PI;
+            scene.add(videoPlane);
+        }
+
         //TP
         {{-- camera.position.set(160, 50, 0);
         control.enableZoom = true;
