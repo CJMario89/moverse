@@ -29,8 +29,8 @@
                 justify-content: center;
                 align-items: center;
                 margin: 0 auto;
-                width: 200px;
-                height: 50px;
+                width: 180px;
+                height: 40px;
                 top: 85%;
                 left: 50%;
                 transform: translate(-50%, -50%);
@@ -228,7 +228,7 @@
 
         //camera
         var windowInnerHeight = window.innerHeight -100;
-        var camera = new THREE.PerspectiveCamera(70, window.innerWidth/windowInnerHeight, 0.01, 500);
+        var camera = new THREE.PerspectiveCamera(70, window.innerWidth/windowInnerHeight, 0.01, 180);
         
         
         var scene = new THREE.Scene();
@@ -292,18 +292,18 @@
         scene.fog = new THREE.Fog(0x191970, 130, 170);
         //FPS
         //addSpaceShuttle();
-        addAirShip();
+        //addAirShip();
         addCityView();
         //TP
         addCubic();
         addMoverse();
-        add_neon_signs_street();
-        add_taiwan_style_signboard_lowpoly();
+        //add_neon_signs_street();
+        //add_taiwan_style_signboard_lowpoly();
         addStar();
 
         addFloor();
         //add_soda_vending_machine();
-        add_stairs__road_2_nowhere__free_3d_low_poly_model();
+        //add_stairs__road_2_nowhere__free_3d_low_poly_model();
         add_video_plane_base();
 
 
@@ -311,18 +311,24 @@
             const pointLight = new THREE.PointLight( 0xffd4e0, 0.3);
             pointLight.position.set(0, 0, 0);
             scene.add(pointLight);
-            const pointLight1 = new THREE.PointLight( 0xffd4e0, 0.3);
+            const pointLight1 = new THREE.PointLight( 0xffd4e0, 0.4);
             pointLight1.position.set(100, 0, 0);
             scene.add(pointLight1);
-            const pointLight2 = new THREE.PointLight( 0xffd4e0, 0.3);
+            const pointLight2 = new THREE.PointLight( 0xffd4e0, 0.4);
             pointLight2.position.set(0, 0, 100);
             scene.add(pointLight2);
-            const pointLight3 = new THREE.PointLight( 0xffd4e0, 0.3);
+            const pointLight3 = new THREE.PointLight( 0xffd4e0, 0.4);
             pointLight3.position.set(-100, 0, 0);
             scene.add(pointLight3);
-            const pointLight4 = new THREE.PointLight( 0xffd4e0, 0.3);
+            const pointLight4 = new THREE.PointLight( 0xffd4e0, 0.4);
             pointLight4.position.set(0, 0, -100);
             scene.add(pointLight4);
+            const pointLight5 = new THREE.PointLight( 0xffd4e0, 0.4);
+            pointLight5.position.set(50, 0, -50);
+            scene.add(pointLight5);
+            const pointLight6 = new THREE.PointLight( 0xffd4e0, 0.4);
+            pointLight6.position.set(50, 0, 50);
+            scene.add(pointLight6);
         }
         
 
@@ -652,7 +658,7 @@
 
         //addCubic
         function addCubic(){
-            const cubicGeo = new THREE.BoxGeometry(1500, 400, 1500);
+            const cubicGeo = new THREE.BoxGeometry(550, 400, 550);
             const cubicMat = new THREE.MeshBasicMaterial({
                 color:0x2a2a35,
                 side:THREE.DoubleSide
@@ -718,27 +724,27 @@
                             addBuilding(i, buildingPositionY, -j, height);
 
                         }else{
-                            if(rand > 745 && rand < 750){
+                            if(rand > 730 && rand < 750){
                                 var height = 70;
                                 if(i == 0 || j == 0){//repeat side
-                                    height = 50;
+                                    height = 30;
                                     addBuilding(i, buildingPositionY, j, height);
                                     addBuilding(-i , buildingPositionY, -j, height);
                                 }else if((Math.abs(i) + Math.abs(j)) < 16){
-                                    height = 45;
+                                    height = 25;
                                     addBuilding(i, buildingPositionY, j, height);
                                     addBuilding(-i, buildingPositionY, -j, height);
                                     addBuilding(-i, buildingPositionY, j, height);
                                     addBuilding(i, buildingPositionY, -j, height);
                                 }else{
-                                    height = 70;
+                                    height = 50;
                                     addBuilding(i, buildingPositionY, j, height);
                                     addBuilding(-i, buildingPositionY, -j, height);
                                     addBuilding(-i, buildingPositionY, j, height);
                                     addBuilding(i, buildingPositionY, -j, height);
                                 }
-                            }else if(rand < 680 && rand > 640){
-                                var height = 45;
+                            }else if(rand < 680 && rand > 600){
+                                var height = 25;
                                 if(i == 0 || j == 0){//repeat side
                                     addBuilding(i, buildingPositionY, j, height);
                                     addBuilding(-i , buildingPositionY, -j, height);
@@ -759,15 +765,27 @@
             x = await x * 3;
             z = await z * 3;
             //height 5~10
-            const buildingJpg = new THREE.TextureLoader().load("{{asset('/images/building.jpg')}}");
+            const buildingPng = new THREE.TextureLoader().load("{{asset('/images/building.png')}}");
+            buildingPng.needsUpdate = false;
             var buildingHeight = randomBuildingHeight(height) / 2;
             y = buildingHeight / 2;
             var buildingGeo = new THREE.BoxGeometry(3, buildingHeight, 3);
+            {{-- var buildingMat = [];
+            for(var i = 0; i < 6; i++){
+                if(i != 3 || i != 2){
+                    buildingMat.push(new THREE.MeshBasicMaterial({
+                        //color: 0x000000,
+                        map: buildingPng,
+                    }));
+                }
+            } --}}
+
+            const rgb = "rgb("+""+""+"))";
             const buildingMat = new THREE.MeshPhongMaterial({
                 color: 0x000000,
-                //map: buildingJpg,
-                shininess:30
+                shininess:100
             });
+            
             
 
 
@@ -861,6 +879,7 @@
                 height += 1;
             }
             //TP
+            //add wireframe
             for(var i = 0; i < (height / 2) - 1; i++){
                 if(i % 1002 == 1){
                     const buildingFloorGeo = new THREE.BoxGeometry(3.1, 1, 3.1);
@@ -870,6 +889,29 @@
                     scene.add(buildingFloorWireframe);
                 }
             }
+
+            //add buildingWindow
+            {{-- for(var i = 0; i < (height / 2) - 10; i++){
+                if(i % 2 == 1){
+                    const buildingWindowGeo = new THREE.PlaneGeometry(0.5, 0.1);
+                    const buildingWindowMat = new THREE.MeshPhongMaterial({
+                        color: 0xFFD700
+                    })
+                    const buildingWindow = new THREE.Mesh(buildingWindowGeo, buildingWindowMat);
+                    buildingWindow.position.set(x, i, z+2);
+                    scene.add(buildingWindow);
+                }
+                if(i % 2 == 1){
+                    const buildingWindowGeo = new THREE.PlaneGeometry(0.5, 0.1);
+                    const buildingWindowMat = new THREE.MeshPhongMaterial({
+                        color: 0xFFD700
+                    })
+                    const buildingWindow = new THREE.Mesh(buildingWindowGeo, buildingWindowMat);
+                    buildingWindow.position.set(x+2, i, z);
+                    scene.add(buildingWindow);
+                }
+                
+            } --}}
         }
 
 
