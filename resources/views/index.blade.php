@@ -308,25 +308,25 @@
 
 
         function addPointLight(){
-            const pointLight = new THREE.PointLight( 0xffd4e0, 0.3);
+            const pointLight = new THREE.PointLight( 0xffd4e0, 0.1);
             pointLight.position.set(0, 0, 0);
             scene.add(pointLight);
-            const pointLight1 = new THREE.PointLight( 0xffd4e0, 0.4);
+            const pointLight1 = new THREE.PointLight( 0xffd4e0, 0.1);
             pointLight1.position.set(100, 0, 0);
             scene.add(pointLight1);
-            const pointLight2 = new THREE.PointLight( 0xffd4e0, 0.4);
+            const pointLight2 = new THREE.PointLight( 0xffd4e0, 0.1);
             pointLight2.position.set(0, 0, 100);
             scene.add(pointLight2);
-            const pointLight3 = new THREE.PointLight( 0xffd4e0, 0.4);
+            const pointLight3 = new THREE.PointLight( 0xffd4e0, 0.1);
             pointLight3.position.set(-100, 0, 0);
             scene.add(pointLight3);
-            const pointLight4 = new THREE.PointLight( 0xffd4e0, 0.4);
+            const pointLight4 = new THREE.PointLight( 0xffd4e0, 0.1);
             pointLight4.position.set(0, 0, -100);
             scene.add(pointLight4);
-            const pointLight5 = new THREE.PointLight( 0xffd4e0, 0.4);
+            const pointLight5 = new THREE.PointLight( 0xffd4e0, 0.1);
             pointLight5.position.set(50, 0, -50);
             scene.add(pointLight5);
-            const pointLight6 = new THREE.PointLight( 0xffd4e0, 0.4);
+            const pointLight6 = new THREE.PointLight( 0xffd4e0, 0.1);
             pointLight6.position.set(50, 0, 50);
             scene.add(pointLight6);
         }
@@ -779,10 +779,10 @@
                     }));
                 }
             } --}}
-
-            const rgb = "rgb("+""+""+"))";
+            var randColor = THREE.MathUtils.randFloat(0, 30);
+            const rgb = "rgb("+randColor+","+randColor+","+randColor+")";
             const buildingMat = new THREE.MeshPhongMaterial({
-                color: 0x000000,
+                color: rgb,
                 shininess:100
             });
             
